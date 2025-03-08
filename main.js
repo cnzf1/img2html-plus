@@ -21,13 +21,13 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// main.ts
+// src/main.ts
 var main_exports = {};
 __export(main_exports, {
   default: () => Img2HtmlPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 
 // src/i18n.ts
 var zh = {
@@ -100,7 +100,7 @@ function getTranslations() {
   return en;
 }
 
-// main.ts
+// src/types.ts
 var DEFAULT_SETTINGS = {
   imageWidth: "auto",
   showNotice: true,
@@ -108,7 +108,76 @@ var DEFAULT_SETTINGS = {
   useCustomPath: false,
   includeAlt: false
 };
-var Img2HtmlPlugin = class extends import_obsidian.Plugin {
+
+// src/settings.ts
+var import_obsidian = require("obsidian");
+var Img2HtmlSettingTab = class extends import_obsidian.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    const { containerEl } = this;
+    const i18n = this.plugin.i18n;
+    containerEl.empty();
+    containerEl.createEl("h2", { text: i18n.settings.title });
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.imageWidth.name).setDesc(i18n.settings.imageWidth.desc).addText((text) => text.setPlaceholder("auto").setValue(this.plugin.settings.imageWidth).onChange(async (value) => {
+      this.plugin.settings.imageWidth = value;
+      await this.plugin.saveSettings();
+    }));
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.useCustomPath.name).setDesc(i18n.settings.useCustomPath.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.useCustomPath).onChange(async (value) => {
+      this.plugin.settings.useCustomPath = value;
+      await this.plugin.saveSettings();
+    }));
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.imagePath.name).setDesc(i18n.settings.imagePath.desc).addText((text) => text.setPlaceholder("./assets").setValue(this.plugin.settings.imagePath).onChange(async (value) => {
+      this.plugin.settings.imagePath = value;
+      await this.plugin.saveSettings();
+    }));
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.includeAlt.name).setDesc(i18n.settings.includeAlt.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.includeAlt).onChange(async (value) => {
+      this.plugin.settings.includeAlt = value;
+      await this.plugin.saveSettings();
+    }));
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.showNotice.name).setDesc(i18n.settings.showNotice.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.showNotice).onChange(async (value) => {
+      this.plugin.settings.showNotice = value;
+      await this.plugin.saveSettings();
+    }));
+  }
+};
+
+// src/utils.ts
+function getFileExtension(mimeType) {
+  const mimeToExt = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/gif": "gif",
+    "image/svg+xml": "svg",
+    "image/webp": "webp",
+    "image/bmp": "bmp",
+    "image/tiff": "tiff"
+  };
+  return mimeToExt[mimeType] || "png";
+}
+function createHtmlImgTag(fileName, imagePath, imageDir, useCustomPath, customPath, imageWidth, includeAlt) {
+  let src = "";
+  if (useCustomPath) {
+    const path = customPath.trim();
+    if (path.startsWith("./") || path.startsWith("../")) {
+      src = `${path}/${fileName}`;
+    } else {
+      src = `./${path}/${fileName}`.replace(/\/\//g, "/");
+    }
+  } else {
+    src = fileName;
+  }
+  if (includeAlt) {
+    return `<img src="${src}" width="${imageWidth}" alt="${fileName}">`;
+  } else {
+    return `<img src="${src}" width="${imageWidth}">`;
+  }
+}
+
+// src/main.ts
+var Img2HtmlPlugin = class extends import_obsidian2.Plugin {
   async onload() {
     await this.loadSettings();
     this.i18n = getTranslations();
@@ -161,7 +230,7 @@ var Img2HtmlPlugin = class extends import_obsidian.Plugin {
       return;
     }
     const timestamp = (/* @__PURE__ */ new Date()).getTime();
-    const fileName = `image_${timestamp}.${this.getFileExtension(file.type)}`;
+    const fileName = `image_${timestamp}.${getFileExtension(file.type)}`;
     let imagePath = "";
     let imageDir = "";
     if (this.settings.useCustomPath) {
@@ -169,9 +238,9 @@ var Img2HtmlPlugin = class extends import_obsidian.Plugin {
       const customPath = this.settings.imagePath.trim();
       const normalizedCustomPath = customPath.startsWith("/") ? customPath.substring(1) : customPath;
       if (normalizedCustomPath.startsWith("./") || normalizedCustomPath.startsWith("../")) {
-        imageDir = (0, import_obsidian.normalizePath)(`${basePath}/${normalizedCustomPath}`);
+        imageDir = (0, import_obsidian2.normalizePath)(`${basePath}/${normalizedCustomPath}`);
       } else {
-        imageDir = (0, import_obsidian.normalizePath)(normalizedCustomPath);
+        imageDir = (0, import_obsidian2.normalizePath)(normalizedCustomPath);
       }
       if (!await this.app.vault.adapter.exists(imageDir)) {
         await this.app.vault.createFolder(imageDir);
@@ -184,78 +253,18 @@ var Img2HtmlPlugin = class extends import_obsidian.Plugin {
     }
     const buffer = await file.arrayBuffer();
     await this.app.vault.createBinary(imagePath, buffer);
-    const imgTag = this.createHtmlImgTag(fileName, imagePath, imageDir);
+    const imgTag = createHtmlImgTag(
+      fileName,
+      imagePath,
+      imageDir,
+      this.settings.useCustomPath,
+      this.settings.imagePath,
+      this.settings.imageWidth,
+      this.settings.includeAlt
+    );
     editor.replaceSelection(imgTag);
     if (this.settings.showNotice) {
-      new import_obsidian.Notice(`${this.i18n.notice.imagePasted} ${imageDir}`);
+      new import_obsidian2.Notice(`${this.i18n.notice.imagePasted} ${imageDir}`);
     }
-  }
-  /**
-   * 根据 MIME 类型获取文件扩展名
-   */
-  getFileExtension(mimeType) {
-    const mimeToExt = {
-      "image/jpeg": "jpg",
-      "image/png": "png",
-      "image/gif": "gif",
-      "image/svg+xml": "svg",
-      "image/webp": "webp",
-      "image/bmp": "bmp",
-      "image/tiff": "tiff"
-    };
-    return mimeToExt[mimeType] || "png";
-  }
-  /**
-   * 创建 HTML 图片标签
-   */
-  createHtmlImgTag(fileName, imagePath, imageDir) {
-    let src = "";
-    if (this.settings.useCustomPath) {
-      const customPath = this.settings.imagePath.trim();
-      if (customPath.startsWith("./") || customPath.startsWith("../")) {
-        src = `${customPath}/${fileName}`;
-      } else {
-        src = `./${customPath}/${fileName}`.replace(/\/\//g, "/");
-      }
-    } else {
-      src = fileName;
-    }
-    if (this.settings.includeAlt) {
-      return `<img src="${src}" width="${this.settings.imageWidth}" alt="${fileName}">`;
-    } else {
-      return `<img src="${src}" width="${this.settings.imageWidth}">`;
-    }
-  }
-};
-var Img2HtmlSettingTab = class extends import_obsidian.PluginSettingTab {
-  constructor(app, plugin) {
-    super(app, plugin);
-    this.plugin = plugin;
-  }
-  display() {
-    const { containerEl } = this;
-    const i18n = this.plugin.i18n;
-    containerEl.empty();
-    containerEl.createEl("h2", { text: i18n.settings.title });
-    new import_obsidian.Setting(containerEl).setName(i18n.settings.imageWidth.name).setDesc(i18n.settings.imageWidth.desc).addText((text) => text.setPlaceholder("auto").setValue(this.plugin.settings.imageWidth).onChange(async (value) => {
-      this.plugin.settings.imageWidth = value;
-      await this.plugin.saveSettings();
-    }));
-    new import_obsidian.Setting(containerEl).setName(i18n.settings.useCustomPath.name).setDesc(i18n.settings.useCustomPath.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.useCustomPath).onChange(async (value) => {
-      this.plugin.settings.useCustomPath = value;
-      await this.plugin.saveSettings();
-    }));
-    new import_obsidian.Setting(containerEl).setName(i18n.settings.imagePath.name).setDesc(i18n.settings.imagePath.desc).addText((text) => text.setPlaceholder("./assets").setValue(this.plugin.settings.imagePath).onChange(async (value) => {
-      this.plugin.settings.imagePath = value;
-      await this.plugin.saveSettings();
-    }));
-    new import_obsidian.Setting(containerEl).setName(i18n.settings.includeAlt.name).setDesc(i18n.settings.includeAlt.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.includeAlt).onChange(async (value) => {
-      this.plugin.settings.includeAlt = value;
-      await this.plugin.saveSettings();
-    }));
-    new import_obsidian.Setting(containerEl).setName(i18n.settings.showNotice.name).setDesc(i18n.settings.showNotice.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.showNotice).onChange(async (value) => {
-      this.plugin.settings.showNotice = value;
-      await this.plugin.saveSettings();
-    }));
   }
 };
