@@ -78,7 +78,7 @@ HTML 格式的图片标签比 Markdown 或 Obsidian 的 wikilink 格式更广泛
 1. 克隆此仓库
 2. 运行 `npm install` 安装依赖
 3. 运行 `npm run dev` 开始开发，这将自动编译并监视文件变化
-4. 将 `main.js`、`manifest.json` 和 `styles.css` 复制到你的 vault 的 `.obsidian/plugins/img2html/` 目录下进行测试
+4. 将 `main.js` 和 `manifest.json` 复制到你的 vault 的 `.obsidian/plugins/img2html/` 目录下进行测试
 
 ## 许可证
 

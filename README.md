@@ -78,7 +78,7 @@ By default, the plugin generates HTML tags without the alt attribute to keep the
 1. Clone this repository
 2. Run `npm install` to install dependencies
 3. Run `npm run dev` to start compilation in watch mode
-4. Copy `main.js`, `manifest.json`, and `styles.css` to your vault's `.obsidian/plugins/img2html/` directory for testing
+4. Copy `main.js` and `manifest.json` to your vault's `.obsidian/plugins/img2html/` directory for testing
 
 ## License
 
