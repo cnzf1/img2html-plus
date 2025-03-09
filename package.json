@@ -1,6 +1,6 @@
 {
 	"name": "img2html",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Paste images as HTML format instead of Obsidian wikilink or markdown format",
 	"main": "main.js",
 	"scripts": {
