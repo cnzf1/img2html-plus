@@ -37,8 +37,8 @@ export function createHtmlImgTag(
 		if (path.startsWith('./') || path.startsWith('../')) {
 			src = `${path}/${fileName}`;
 		} else {
-			// 否则添加 ./ 前缀
-			src = `./${path}/${fileName}`.replace(/\/\//g, '/');
+			// 直接使用自定义路径，不添加./前缀
+			src = `${path}/${fileName}`.replace(/\/\//g, '/');
 		}
 	} else {
 		// 使用默认路径（与当前文件同目录）

@@ -7,7 +7,6 @@ import { getFileExtension, createHtmlImgTag } from './utils';
 export default class Img2HtmlPlugin extends Plugin {
 	settings: Img2HtmlSettings;
 	i18n: Translations;
-	statusBarItemEl: HTMLElement;
 	settingTab: Img2HtmlSettingTab;
 
 	async onload() {
@@ -24,10 +23,6 @@ export default class Img2HtmlPlugin extends Plugin {
 		// 添加设置选项卡
 		this.settingTab = new Img2HtmlSettingTab(this.app, this);
 		this.addSettingTab(this.settingTab);
-
-		// 添加状态栏项目
-		this.statusBarItemEl = this.addStatusBarItem();
-		this.statusBarItemEl.setText(this.i18n.statusBar.enabled);
 		
 		// 监听语言变更
 		this.registerDomEvent(window, 'storage', (e: StorageEvent) => {
@@ -47,9 +42,6 @@ export default class Img2HtmlPlugin extends Plugin {
 	updateI18n() {
 		// 更新翻译
 		this.i18n = getTranslations();
-		
-		// 更新状态栏
-		this.statusBarItemEl.setText(this.i18n.statusBar.enabled);
 		
 		// 如果设置页面已打开，则刷新设置页面
 		if (this.settingTab && this.settingTab.containerEl.parentElement) {

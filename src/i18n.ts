@@ -43,7 +43,7 @@ const zh: Translations = {
         },
         imagePath: {
             name: '自定义图片路径',
-            desc: '设置图片保存的路径，可以是相对路径（如 ./assets）或绝对路径（如 assets）'
+            desc: '设置图片保存的路径，可以是相对路径（如 ./assets）'
         },
         includeAlt: {
             name: '包含 alt 属性',
@@ -75,7 +75,7 @@ const en: Translations = {
         },
         imagePath: {
             name: 'Custom Image Path',
-            desc: 'Set the path to save images, can be a relative path (e.g. ./assets) or absolute path (e.g. assets)'
+            desc: 'Set the path to save images, can be a relative path (e.g. ./assets)'
         },
         includeAlt: {
             name: 'Include alt Attribute',
