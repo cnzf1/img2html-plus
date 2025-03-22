@@ -27,8 +27,6 @@ export class Img2HtmlSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl('h2', {text: i18n.settings.title});
-
 		new Setting(containerEl)
 			.setName(i18n.settings.imageWidth.name)
 			.setDesc(i18n.settings.imageWidth.desc)

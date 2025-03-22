@@ -1,6 +1,5 @@
 export interface Translations {
     settings: {
-        title: string;
         imageWidth: {
             name: string;
             desc: string;
@@ -32,7 +31,6 @@ export interface Translations {
 
 const zh: Translations = {
     settings: {
-        title: 'Image to HTML 设置',
         imageWidth: {
             name: '图片宽度',
             desc: '设置粘贴图片的宽度，可以是像素值（如 500px）或百分比（如 100%）或 auto'
@@ -64,30 +62,29 @@ const zh: Translations = {
 
 const en: Translations = {
     settings: {
-        title: 'Image to HTML Settings',
         imageWidth: {
-            name: 'Image Width',
+            name: 'Image width',
             desc: 'Set the width of pasted images, can be a pixel value (e.g. 500px), percentage (e.g. 100%) or auto'
         },
         useCustomPath: {
-            name: 'Use Custom Image Path',
+            name: 'Use custom image path',
             desc: 'When enabled, images will be saved to the specified path instead of the current file directory'
         },
         imagePath: {
-            name: 'Custom Image Path',
+            name: 'Custom image path',
             desc: 'Set the path to save images, can be a relative path (e.g. ./assets)'
         },
         includeAlt: {
-            name: 'Include alt Attribute',
+            name: 'Include alt attribute',
             desc: 'When enabled, HTML image tags will include the alt attribute, which helps with accessibility and SEO, but makes the tag longer'
         },
         showNotice: {
-            name: 'Show Notification',
+            name: 'Show notification',
             desc: 'Show notification when pasting images'
         }
     },
     statusBar: {
-        enabled: 'Img2Html: Enabled'
+        enabled: 'Img2Html: enabled'
     },
     notice: {
         imagePasted: 'Image pasted as HTML format, saved in'
@@ -95,14 +92,10 @@ const en: Translations = {
 };
 
 export function getTranslations(): Translations {
-    // 获取 Obsidian 当前语言设置
     const lang = window.localStorage.getItem('language');
-    
-    // 如果是中文，返回中文翻译
     if (lang === 'zh' || lang === 'zh-TW') {
         return zh;
     }
     
-    // 默认返回英文翻译
     return en;
 } 
