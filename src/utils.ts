@@ -1,5 +1,5 @@
 /**
- * 根据 MIME 类型获取文件扩展名
+ * Get file extension from MIME type
  */
 export function getFileExtension(mimeType: string): string {
 	const mimeToExt: Record<string, string> = {
@@ -16,7 +16,7 @@ export function getFileExtension(mimeType: string): string {
 }
 
 /**
- * 创建 HTML 图片标签
+ * Create HTML image tag
  */
 export function createHtmlImgTag(
 	fileName: string, 
@@ -30,22 +30,22 @@ export function createHtmlImgTag(
 	let src = '';
 	
 	if (useCustomPath) {
-		// 使用自定义路径
+		// Use custom path
 		const path = customPath.trim();
 		
-		// 如果是相对路径（以 ./ 或 ../ 开头）
+		// If relative path (starts with ./ or ../)
 		if (path.startsWith('./') || path.startsWith('../')) {
 			src = `${path}/${fileName}`;
 		} else {
-			// 直接使用自定义路径，不添加./前缀
+			// Use custom path directly without ./ prefix
 			src = `${path}/${fileName}`.replace(/\/\//g, '/');
 		}
 	} else {
-		// 使用默认路径（与当前文件同目录）
+		// Use default path (same directory as current file)
 		src = fileName;
 	}
 	
-	// 构建 HTML 标签
+	// Build HTML tag
 	if (includeAlt) {
 		return `<img src="${src}" width="${imageWidth}" alt="${fileName}">`;
 	} else {

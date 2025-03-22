@@ -1,21 +1,21 @@
 /**
- * 插件设置接口
+ * Plugin settings interface
  */
 export interface Img2HtmlSettings {
-	// 图片宽度设置，可以是固定值或百分比
+	// Image width setting, can be fixed value or percentage
 	imageWidth: string;
-	// 是否在粘贴时显示通知
+	// Whether to show notification when pasting
 	showNotice: boolean;
-	// 自定义图片保存路径
+	// Custom image save path
 	imagePath: string;
-	// 是否使用自定义路径
+	// Whether to use custom path
 	useCustomPath: boolean;
-	// 是否包含 alt 属性
+	// Whether to include alt attribute
 	includeAlt: boolean;
 }
 
 /**
- * 默认设置
+ * Default settings
  */
 export const DEFAULT_SETTINGS: Img2HtmlSettings = {
 	imageWidth: 'auto',
