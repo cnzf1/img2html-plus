@@ -1,4 +1,4 @@
-# Obsidian Image to HTML
+# Image to HTML
 
 [English](README.md)
 
