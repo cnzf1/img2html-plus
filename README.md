@@ -1,4 +1,4 @@
-# Obsidian Image to HTML
+# Image to HTML
 
 [中文文档](README_CN.md)
 
