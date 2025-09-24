@@ -1,0 +1,9 @@
+{
+  "imageWidth": "auto",
+  "align": "left",
+  "showNotice": true,
+  "imagePath": "./assets",
+  "useCustomPath": true,
+  "includeAlt": false,
+  "dropPasteCursorLocation": "left"
+}
