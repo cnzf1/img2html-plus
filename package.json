@@ -1,6 +1,6 @@
 {
-	"name": "img2html",
-	"version": "1.0.2",
+	"name": "img2html-plus",
+	"version": "1.0.0",
 	"description": "Paste images as HTML format instead of Obsidian wikilink or markdown format",
 	"main": "main.js",
 	"scripts": {
@@ -14,7 +14,7 @@
 		"image",
 		"html"
 	],
-	"author": "0x1DA9430",
+	"author": "cnzf1",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
@@ -27,3 +27,4 @@
 		"typescript": "4.7.4"
 	}
 }
+
