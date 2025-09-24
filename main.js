@@ -36,10 +36,6 @@ var zh = {
       name: "\u56FE\u7247\u5BBD\u5EA6",
       desc: "\u8BBE\u7F6E\u7C98\u8D34\u56FE\u7247\u7684\u5BBD\u5EA6\uFF0C\u53EF\u4EE5\u662F\u50CF\u7D20\u503C\uFF08\u5982 500px\uFF09\u6216\u767E\u5206\u6BD4\uFF08\u5982 100%\uFF09\u6216 auto"
     },
-    align: {
-      name: "\u56fe\u7247\u5bf9\u9f50\u65b9\u5f0f",
-      desc:"\u8bbe\u7f6e\u56fe\u7247\u7684\u5bf9\u9f50\u65b9\u5f0f\uff0c\u53ef\u4ee5\u9009\u62e9\u5c45\u4e2d\u5bf9\u9f50\u3001\u5411\u5de6\u5bf9\u9f50\u3001\u5411\u53f3\u5bf9\u9f50\uff0c\u9ed8\u8ba4\u5c45\u4e2d\u5bf9\u9f50"
-    },
     useCustomPath: {
       name: "\u4F7F\u7528\u81EA\u5B9A\u4E49\u56FE\u7247\u8DEF\u5F84",
       desc: "\u542F\u7528\u540E\uFF0C\u56FE\u7247\u5C06\u4FDD\u5B58\u5230\u6307\u5B9A\u8DEF\u5F84\u800C\u4E0D\u662F\u5F53\u524D\u6587\u4EF6\u6240\u5728\u76EE\u5F55"
@@ -55,6 +51,10 @@ var zh = {
     showNotice: {
       name: "\u663E\u793A\u901A\u77E5",
       desc: "\u7C98\u8D34\u56FE\u7247\u65F6\u663E\u793A\u901A\u77E5"
+    },
+    align: {
+      name: "\u5BF9\u9F50\u65B9\u5411",
+      desc: "\u8BBE\u7F6E\u56FE\u7247\u7684\u5BF9\u9F50\u65B9\u5F0F\uFF0C\u53EF\u4EE5\u9009\u62E9\u5C45\u4E2D\u5BF9\u9F50\u3001\u5411\u5DE6\u5BF9\u9F50\u3001\u5411\u53F3\u5BF9\u9F50\uFF0C\u9ED8\u8BA4\u5C45\u4E2D\u5BF9\u9F50"
     }
   },
   statusBar: {
@@ -69,10 +69,6 @@ var en = {
     imageWidth: {
       name: "Image width",
       desc: "Set the width of pasted images, can be a pixel value (e.g. 500px), percentage (e.g. 100%) or auto"
-    },
-    align: {
-      name: "Image alignment",
-      desc: "Set the alignment of the image, you can choose center alignment, left alignment, right alignment, default is center alignment."
     },
     useCustomPath: {
       name: "Use custom image path",
@@ -89,6 +85,10 @@ var en = {
     showNotice: {
       name: "Show notification",
       desc: "Show notification when pasting images"
+    },
+    align: {
+      name: "Image alignment",
+      desc: "Set the alignment of the image, you can choose center alignment, left alignment, right alignment, default is center alignment."
     }
   },
   statusBar: {
@@ -109,11 +109,11 @@ function getTranslations() {
 // src/types.ts
 var DEFAULT_SETTINGS = {
   imageWidth: "auto",
-  align: "center",
   showNotice: true,
   imagePath: "./assets",
   useCustomPath: false,
-  includeAlt: false
+  includeAlt: false,
+  align: "center"
 };
 
 // src/settings.ts
@@ -131,23 +131,12 @@ var Img2HtmlSettingTab = class extends import_obsidian.PluginSettingTab {
       this.plugin.settings.imageWidth = value;
       await this.plugin.saveSettings();
     }));
-    // new import_obsidian.Setting(containerEl).setName(i18n.settings.align.name).setDesc(i18n.settings.align.desc).addText((text) => text.setPlaceholder("center").setValue(this.plugin.settings.align).onChange(async (value) => {
-    //   this.plugin.settings.align = value;
-    //   await this.plugin.saveSettings();
-    // }));
-    new import_obsidian.Setting(containerEl)
-    .setName(i18n.settings.align.name)
-    .setTooltip(i18n.settings.align.desc)
-    .addDropdown((i) => {
-        i.addOption('center', 'Center alignment')
-            .addOption('left', 'Left alignment')
-            .addOption('right', 'Right alignment')
-            .setValue(this.plugin.settings.align)
-            .onChange(async (i) => {
-                ;(this.plugin.settings.align = i),
-                    await this.plugin.saveSettings()
-            })
-    }),
+    new import_obsidian.Setting(containerEl).setName(i18n.settings.align.name).setDesc(i18n.settings.align.desc).addText(
+      (text) => text.setPlaceholder("center").setValue(this.plugin.settings.align).onChange(async (value) => {
+        this.plugin.settings.align = value;
+        await this.plugin.saveSettings();
+      })
+    );
     new import_obsidian.Setting(containerEl).setName(i18n.settings.useCustomPath.name).setDesc(i18n.settings.useCustomPath.desc).addToggle((toggle) => toggle.setValue(this.plugin.settings.useCustomPath).onChange(async (value) => {
       this.plugin.settings.useCustomPath = value;
       await this.plugin.saveSettings();
@@ -180,7 +169,7 @@ function getFileExtension(mimeType) {
   };
   return mimeToExt[mimeType] || "png";
 }
-function createHtmlImgTag(fileName, imagePath, imageDir, useCustomPath, customPath, imageWidth, align, includeAlt) {
+function createHtmlImgTag(fileName, imagePath, imageDir, useCustomPath, customPath, imageWidth, includeAlt, align) {
   let src = "";
   if (useCustomPath) {
     const path = customPath.trim();
@@ -266,8 +255,8 @@ var Img2HtmlPlugin = class extends import_obsidian2.Plugin {
       this.settings.useCustomPath,
       this.settings.imagePath,
       this.settings.imageWidth,
-      this.settings.align,
-      this.settings.includeAlt
+      this.settings.includeAlt,
+      this.settings.align
     );
     editor.replaceSelection(imgTag);
     if (this.settings.showNotice) {

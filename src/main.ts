@@ -116,7 +116,8 @@ export default class Img2HtmlPlugin extends Plugin {
 			this.settings.useCustomPath,
 			this.settings.imagePath,
 			this.settings.imageWidth,
-			this.settings.includeAlt
+			this.settings.includeAlt,
+			this.settings.align
 		);
 		
 		// Insert HTML image tag into editor

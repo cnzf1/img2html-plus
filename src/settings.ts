@@ -7,6 +7,7 @@ interface Img2HtmlPlugin extends Plugin {
 		showNotice: boolean;
 		imagePath: string;
 		useCustomPath: boolean;
+		align: string;
 		includeAlt: boolean;
 	};
 	i18n: Translations;
@@ -37,6 +38,18 @@ export class Img2HtmlSettingTab extends PluginSettingTab {
 					this.plugin.settings.imageWidth = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new Setting(containerEl)
+		.setName(i18n.settings.align.name)
+		.setDesc(i18n.settings.align.desc)
+		.addText(text => text
+			.setPlaceholder('center')
+			.setValue(this.plugin.settings.align)
+			.onChange(async(value)=> {
+				this.plugin.settings.align = value;
+				await this.plugin.saveSettings();
+			})
+		)
 
 		new Setting(containerEl)
 			.setName(i18n.settings.useCustomPath.name)

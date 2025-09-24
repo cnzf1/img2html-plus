@@ -25,7 +25,8 @@ export function createHtmlImgTag(
 	useCustomPath: boolean,
 	customPath: string,
 	imageWidth: string,
-	includeAlt: boolean
+	includeAlt: boolean,
+	align: string,
 ): string {
 	let src = '';
 	
@@ -47,8 +48,8 @@ export function createHtmlImgTag(
 	
 	// Build HTML tag
 	if (includeAlt) {
-		return `<img src="${src}" width="${imageWidth}" alt="${fileName}">`;
+		return `<img src="${src}" width="${imageWidth}" align="${align}" alt="${fileName}">`;
 	} else {
-		return `<img src="${src}" width="${imageWidth}">`;
+		return `<img src="${src}" width="${imageWidth}" align="${align}">`;
 	}
 } 

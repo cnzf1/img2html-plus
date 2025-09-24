@@ -12,6 +12,8 @@ export interface Img2HtmlSettings {
 	useCustomPath: boolean;
 	// Whether to include alt attribute
 	includeAlt: boolean;
+	// Image alignment
+	align: string;
 }
 
 /**
@@ -22,5 +24,6 @@ export const DEFAULT_SETTINGS: Img2HtmlSettings = {
 	showNotice: true,
 	imagePath: './assets',
 	useCustomPath: false,
-	includeAlt: false
+	includeAlt: false,
+	align: 'center',
 }; 
