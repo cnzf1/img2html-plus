@@ -1,4 +1,4 @@
-# Image to HTML
+# Image to HTML Plus
 
 [中文文档](README_CN.md)
 
@@ -64,7 +64,7 @@ By default, the plugin generates HTML tags without the alt attribute to keep the
 2. Go to "Community Plugins"
 3. Disable "Safe Mode"
 4. Click "Browse"
-5. Search for "Image to HTML"
+5. Search for "Image to HTML Plus"
 6. Click Install
 7. Enable the plugin
 
