@@ -1,4 +1,4 @@
-# Image to HTML
+# Image to HTML Plus
 
 [English](README.md)
 
@@ -64,7 +64,7 @@ HTML 格式的图片标签比 Markdown 或 Obsidian 的 wikilink 格式更广泛
 2. 转到"第三方插件"
 3. 禁用"安全模式"
 4. 点击"浏览"
-5. 搜索"Image to HTML"
+5. 搜索"Image to HTML Plus"
 6. 点击安装
 7. 启用插件
 
