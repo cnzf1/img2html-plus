@@ -1,10 +1,10 @@
 {
-    "id": "img2html-plus",
-    "name": "Image to HTML Plus",
-    "minAppVersion": "1.4.0",
-    "description": "Paste images as HTML format instead of wikilink or markdown format",
-    "author": "cnzf1",
-    "authorUrl": "https://github.com/cnzf1",
-    "isDesktopOnly": false,
-    "version": "1.0.0"
+  "id": "img2html-plus",
+  "name": "Image to HTML Plus",
+  "minAppVersion": "1.4.0",
+  "description": "Paste images as HTML format instead of wikilink or markdown format, and support align left or right.",
+  "author": "cnzf1",
+  "authorUrl": "https://github.com/cnzf1",
+  "isDesktopOnly": false,
+  "version": "1.0.0"
 }
